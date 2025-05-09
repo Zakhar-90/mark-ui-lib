@@ -3,75 +3,62 @@ import { Select } from "./components/Select";
 import { Input } from "./components/Input";
 import { Textarea } from "./components/Textarea";
 
-import './styles.css'
+import "./styles.css";
 import { Tabs } from "./components/Tabs";
+import { ContentTab } from "./components/ContentTab";
 
 const root = document.querySelector("#root") as HTMLElement;
 
+const tab1 = new ContentTab([
+  new Input("", () => {}, {
+    label: "Target name",
+  }).render(),
+]).render();
+
 const checkbox = new Checkbox(
-  false,
-  (checked) => {
-    console.log("Checkbox checked:", checked);
+  true,
+  (a) => {
+    wrapper.hidden = a;
   },
   {
-    size: "medium",
-    borderColor: "blue",
-    borderRadius: "8px",
-    label: "Check me!",
+    label: "Hide content",
   }
 );
 
-const select = new Select(
-  [
-    { value: "", label: "--Select--" },
-    { value: "1", label: "Option 1" },
-    { value: "2", label: "Option 2" },
-  ],
-  "",
-  (value) => {
-    console.log("Selected:", value);
-  },
-  {
-    size: "medium",
-    label: "Choose an option",
-  }
+const wrapper = document.createElement("div");
+wrapper.append(
+  new Input("", () => {}, {
+    label: "Target traffic",
+  }).render(),
+  new Textarea("", () => {}, {
+    label: "Description",
+  }).render()
 );
 
-const input = new Input(
-  "",
-  (value) => {
-    console.log("Input value:", value);
-  },
-  {
-    size: "medium",
-    label: "Enter text",
-  }
-);
+wrapper.hidden = checkbox.getChecked()
 
-const textarea = new Textarea(
-  "",
-  (value) => {
-    console.log("Textarea value:", value);
-  },
-  {
-    size: "medium",
-    borderColor: "purple",
-    borderRadius: "8px",
-    label: "Enter more text",
-  }
-);
+const tab2 = new ContentTab([checkbox.render(), wrapper]).render();
 
-const tab1 = document.createElement('div')
-tab1.append(checkbox.render(), select.render(), input.render(), textarea.render())
+const tab3 = new ContentTab([
+  new Select(
+    [
+      { value: "", label: "" },
+      { value: "market", label: "Marketing" },
+      { value: "operation", label: "Operation" },
+    ],
+    "",
+    () => {},
+    {
+      label: "Target type",
+    }
+  ).render(),
+  new Input("", () => {}, {
+    label: "Target audience",
+  }).render(),
+]).render();
 
-const tab2 = document.createElement('div')
-tab2.append(select.render(), input.render(), textarea.render())
-
-const tab3 = document.createElement('div')
-tab3.append(checkbox.render(), textarea.render())
-
-const tabs = new Tabs(root, [
-  {tab: 'Tab1', content: tab1},
-  {tab: 'Tab2', content: tab2},
-  {tab: 'Tab3', content: tab3},
-])
+new Tabs(root, [
+  { tab: "Main", content: tab1 },
+  { tab: "Traffic", content: tab2 },
+  { tab: "Type target", content: tab3 },
+]);

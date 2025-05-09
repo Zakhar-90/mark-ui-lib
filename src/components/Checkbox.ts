@@ -43,6 +43,10 @@ export class Checkbox {
         return label;
     }
 
+    getChecked(): boolean {
+        return this.checked
+    }
+
     private getSize(): {width: string, height: string} {
         return {
             width: this.props.size ? SizeWidth[this.props.size] : SizeWidth.medium,
